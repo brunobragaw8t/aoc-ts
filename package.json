@@ -1,0 +1,10 @@
+{
+  "name": "aoc-ts",
+  "version": "1.0.0",
+  "description": "My Advent of Code challenges solved with TypeScript.",
+  "author": "brunobragaw8t",
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^18.15.11"
+  }
+}
