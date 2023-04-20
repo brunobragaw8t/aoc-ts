@@ -52,16 +52,28 @@ function move(coords: Coordinates, facing: CardialPoint, steps: number): Coordin
 }
 
 function getBlockDistance(directions: string[]): number {
-  let coords = {
+  let coords: Coordinates = {
     x: 0,
     y: 0,
   };
 
+  const placesVisited: Coordinates[] = [{x:0,y:0}];
+
   let facing: CardialPoint = 'N';
 
+  outer_loop:
   for (let i = 0; i < directions.length; i++) {
     facing = turn(facing, directions[i][0]);
-    coords = move(coords, facing, Number(directions[i].substring(1)));
+
+    for (let j = 0; j < Number(directions[i].substring(1)); j++) {
+      coords = move(coords, facing, 1);
+
+      if (placesVisited.find((item) => coords.x === item.x && coords.y === item.y)) {
+        break outer_loop;
+      }
+
+      placesVisited.push(coords);
+    }
   }
 
   return Math.abs(coords.x) + Math.abs(coords.y);
@@ -71,3 +83,4 @@ console.log(getBlockDistance(readFileSync('./input').toString().split(', ')));
 console.log(getBlockDistance(readFileSync('./input-t1').toString().split(', ')));
 console.log(getBlockDistance(readFileSync('./input-t2').toString().split(', ')));
 console.log(getBlockDistance(readFileSync('./input-t3').toString().split(', ')));
+console.log(getBlockDistance(readFileSync('./input-t4').toString().split(', ')));
