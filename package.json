@@ -4,7 +4,11 @@
   "description": "My Advent of Code challenges solved with TypeScript.",
   "author": "brunobragaw8t",
   "type": "module",
+  "scripts": {
+    "dev": "tsc -w"
+  },
   "devDependencies": {
-    "@types/node": "^18.15.11"
+    "@types/node": "^18.15.11",
+    "typescript": "^5.0.4"
   }
 }
