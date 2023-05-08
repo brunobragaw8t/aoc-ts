@@ -13,3 +13,17 @@ test('algo', () => {
 
   console.log(algo(challengeInput));
 });
+
+test('algo part 2', () => {
+  expect(algo("1212", 2)).toBe(6);
+
+  expect(algo("1221", 2)).toBe(0);
+
+  expect(algo("123425", 2)).toBe(4);
+
+  expect(algo("123123", 2)).toBe(12);
+
+  expect(algo("12131415", 2)).toBe(4);
+
+  console.log(algo(challengeInput, 2));
+});
