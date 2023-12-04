@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { algo } = require("./index.js");
+const { algo, algo2 } = require("./index.js");
 
 const inputDemo1 = fs
   .readFileSync(__dirname + "/input-demo-1")
@@ -14,4 +14,6 @@ const input = fs
 test("algo", () => {
   expect(algo(inputDemo1)).toBe(4361);
   console.log('part 1', algo(input));
+  expect(algo2(inputDemo1)).toBe(467835);
+  console.log('part 2', algo2(input));
 });
