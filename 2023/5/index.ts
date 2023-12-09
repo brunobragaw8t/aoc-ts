@@ -22,60 +22,103 @@ function generateMaps(section: string): Map[] {
     .sort((a, b) => a.sourceStart - b.sourceStart);
 }
 
-export function algo(input: string): number {
+function getSeedLocation(
+  sections: string[], sectionsMaps: Record<string, Map[]>, seed: number
+): [number, Map] {
+  let result = 0;
+
+  let firstIterationMap: Map | null = null;
+
+  for (let i = 1; i < 8; i++) {
+    const iterationItem = 0 === result ? seed : result;
+
+    if ('undefined' === typeof sectionsMaps[i]) {
+      sectionsMaps[i] = generateMaps(sections[i]);
+    }
+
+    const maps = sectionsMaps[i];
+
+    let iterationMap: Map | null = null;
+
+    for (const map of maps) {
+      if (iterationItem >= map.sourceStart) {
+        iterationMap = map;
+      }
+    }
+
+    if (null === iterationMap) {
+      iterationMap = {
+        destinationStart: 1,
+        sourceStart: 1,
+        rangeLength: maps[0].sourceStart
+      }
+    }
+
+    if (null === firstIterationMap) {
+      firstIterationMap = iterationMap;
+    }
+
+    const diff = iterationMap.destinationStart - iterationMap.sourceStart;
+
+    const iterationResult =
+      iterationMap.sourceStart + iterationMap.rangeLength > iterationItem
+        ? iterationItem + diff
+        : iterationItem;
+
+    result = iterationResult;
+  }
+
+  if (null === firstIterationMap) {
+    firstIterationMap = {
+      destinationStart: 1,
+      sourceStart: 1,
+      rangeLength: 1,
+    }
+  }
+
+  return [result, firstIterationMap];
+}
+
+export function algo(input: string, part: 1 | 2 = 1): number {
   const sections = input.split('\n\n');
 
-  const seeds = sections[0]
+  const sectionsMaps: Record<string, Map[]> = {};
+
+  let seeds = sections[0]
     .replace('seeds: ', '')
     .split(' ')
     .map((s) => Number(s));
 
-  const locations: number[] = [];
+  if (1 === part) {
+    const locations: number[] = [];
 
-  for (const seed of seeds) {
-    console.log('Seed: ' + seed);
-
-    let result = 0;
-
-    for (let i = 1; i < 8; i++) {
-      const iterationItem = 0 === result ? seed : result;
-
-      console.log('Iteration item: ' + iterationItem);
-
-      const maps = generateMaps(sections[i]);
-
-      let iterationMap: Map | null = null;
-
-      for (const map of maps) {
-        if (iterationItem >= map.sourceStart) {
-          console.log('Found map: ', map);
-          iterationMap = map;
-        }
-      }
-
-      if (null === iterationMap) {
-        iterationMap = {
-          destinationStart: 1,
-          sourceStart: 1,
-          rangeLength: maps[0].sourceStart
-        }
-      }
-
-      const diff = iterationMap.destinationStart - iterationMap.sourceStart;
-
-      const iterationResult =
-        iterationMap.sourceStart + iterationMap.rangeLength > iterationItem
-          ? iterationItem + diff
-          : iterationItem;
-
-      console.log('Iteration result: ' + iterationResult);
-
-      result = iterationResult;
+    for (const seed of seeds) {
+      locations.push(getSeedLocation(sections, sectionsMaps, seed)[0]);
     }
 
-    console.log('Location result: ' + result);
-    locations.push(result);
+    return Math.min(...locations);
+  } 
+
+  let minLocation: number | null = null;
+
+  for (let i = 0; i < seeds.length; i += 2) {
+    console.log('seed range ' + i);
+
+    for (let j = seeds[i]; j < seeds[i] + seeds[i + 1]; j++) {
+      // console.log('seed ' + j);
+
+      const [location, map] = getSeedLocation(sections, sectionsMaps, j);
+
+      if (null === minLocation || location < minLocation) {
+        minLocation = location;
+      }
+
+      // console.log('location', location);
+      // console.log('Map range length', map.rangeLength);
+
+      // j += map.rangeLength - 1;
+    }
   }
 
-  return Math.min(...locations);
+  return minLocation ? minLocation : 0;
 }
