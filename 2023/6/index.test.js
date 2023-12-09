@@ -14,4 +14,6 @@ const input = fs
 test("algo", () => {
   expect(algo(inputDemo1)).toBe(288);
   console.log('part 1', algo(input));
+  expect(algo(inputDemo1, 2)).toBe(71503);
+  console.log('part 2', algo(input, 2));
 });

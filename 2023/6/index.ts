@@ -1,4 +1,20 @@
-export function algo(input: string): number {
+function getPossibleWays(speedPerMmHold: number, time: number, distance: number): number {
+  let possibleWays = 0;
+
+  for (let j = 1; j < time; j++) {
+    const speed = speedPerMmHold * j;
+    const remainingTime = time - j;
+    const distanceCleared = remainingTime * speed;
+
+    if (distanceCleared > distance) {
+      possibleWays++;
+    }
+  }
+
+  return possibleWays;
+}
+
+export function algo(input: string, part: 1 | 2 = 1): number {
   const speedPerMmHold = 1;
 
   const [timesStr, distancesStr] = input.split('\n');
@@ -15,20 +31,18 @@ export function algo(input: string): number {
 
   let totalPossibleWays: number[] = [];
 
-  for (let i = 0; i < times.length; i++) {
-    let possibleWays = 0;
-
-    for (let j = 1; j < times[i]; j++) {
-      const speed = speedPerMmHold * j;
-      const remainingTime = times[i] - j;
-      const distanceCleared = remainingTime * speed;
-
-      if (distanceCleared > distances[i]) {
-        possibleWays++;
-      }
+  if (1 === part) {
+    for (let i = 0; i < times.length; i++) {
+      totalPossibleWays.push(
+        getPossibleWays(speedPerMmHold, times[i], distances[i])
+      );
     }
-
-    totalPossibleWays.push(possibleWays);
+  } else {
+    totalPossibleWays.push(
+      getPossibleWays(
+        speedPerMmHold, Number(times.join('')), Number(distances.join(''))
+      )
+    );
   }
 
   return totalPossibleWays.reduce((acc, i) => acc *= i, 1);
