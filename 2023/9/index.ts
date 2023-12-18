@@ -1,4 +1,4 @@
-function getPrediction(historyItems: number[]): number {
+function getPrediction(historyItems: number[], part: 1 | 2 = 1): number {
   const diffs: number[] = [];
 
   for (let i = 0; i < historyItems.length - 1; i++) {
@@ -6,22 +6,24 @@ function getPrediction(historyItems: number[]): number {
   }
 
   if (diffs.every((i) => 0 === i)) {
-    return historyItems[historyItems.length - 1];
+    return 1 === part ? historyItems[historyItems.length - 1] : historyItems[0];
   }
 
-  const prediction = getPrediction(diffs);
+  const prediction = getPrediction(diffs, part);
 
-  return historyItems[historyItems.length - 1] + prediction;
+  return 1 === part
+    ? historyItems[historyItems.length - 1] + prediction
+    : historyItems[0] - prediction;
 }
 
-export function algo(input: string): number {
+export function algo(input: string, part: 1 | 2 = 1): number {
   const valuesHistories = input.split('\n');
 
   const predictions: number[] = [];
 
   for (const valueHistory of valuesHistories) {
     const historyItems = valueHistory.split(' ').map((i) => Number(i));
-    predictions.push(getPrediction(historyItems));
+    predictions.push(getPrediction(historyItems, part));
   }
 
   return predictions.reduce((acc, i) => acc += i, 0);
