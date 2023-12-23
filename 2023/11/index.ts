@@ -1,10 +1,8 @@
-import { getExpandedUniverse } from "./helpers/get-expanded-universe";
 import { getGalaxies } from "./helpers/get-galaxies";
 
-export function algo(input: string): number {
+export function algo(input: string, expansionRate: number = 1): number {
   const rows = input.split('\n');
-  const expandedUniverse = getExpandedUniverse(rows);
-  const galaxies = getGalaxies(expandedUniverse);
+  const galaxies = getGalaxies(rows, expansionRate);
 
   const steps: number[] = [];
   const comparisonsMade: string[] = [];
