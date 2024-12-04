@@ -111,7 +111,82 @@ export function algo(input: string): number {
   return sum;
 }
 
+/**
+ * Part 2
+ */
+
+function checkTopRight2(letter: string, y: number, x: number, rows: string[]): boolean {
+  return (
+    y - 1 >= 0
+    && !!rows[y - 1][x + 1]
+    && rows[y - 1][x + 1] === letter
+  );
+}
+
+function checkBottomRight2(letter: string, y: number, x: number, rows: string[]): boolean {
+  return (
+    !!rows[y + 1]
+    && !!rows[y + 1][x + 1]
+    && rows[y + 1][x + 1] === letter
+  );
+}
+
+function checkBottomLeft2(letter: string, y: number, x: number, rows: string[]): boolean {
+  return (
+    x - 1 >= 0
+    && !!rows[y + 1]
+    && rows[y + 1][x - 1] === letter
+  );
+}
+
+function checkTopLeft2(letter: string, y: number, x: number, rows: string[]): boolean {
+  return (
+    x - 1 >= 0
+    && y - 1 >= 0
+    && rows[y - 1][x - 1] === letter
+  );
+}
+
 export function algo2(input: string): number {
   let sum = 0;
+
+  const rows = input.split('\n').slice(0, -1);
+
+  for (let y = 0; y < rows.length; y++) {
+    for (let x = 0; x < rows[y].length; x++) {
+      if (rows[y][x] !== 'A') {
+        continue;
+      }
+
+      if (
+        checkTopRight2('S', y, x, rows)
+        && checkBottomRight2('S', y, x, rows)
+        && checkBottomLeft2('M', y, x, rows)
+        && checkTopLeft2('M', y, x, rows)
+      ) sum++;
+
+      if (
+        checkTopRight2('M', y, x, rows)
+        && checkBottomRight2('S', y, x, rows)
+        && checkBottomLeft2('S', y, x, rows)
+        && checkTopLeft2('M', y, x, rows)
+      ) sum++;
+
+      if (
+        checkTopRight2('M', y, x, rows)
+        && checkBottomRight2('M', y, x, rows)
+        && checkBottomLeft2('S', y, x, rows)
+        && checkTopLeft2('S', y, x, rows)
+      ) sum++;
+
+      if (
+        checkTopRight2('S', y, x, rows)
+        && checkBottomRight2('M', y, x, rows)
+        && checkBottomLeft2('M', y, x, rows)
+        && checkTopLeft2('S', y, x, rows)
+      ) sum++;
+    }
+  }
+
   return sum;
 }
