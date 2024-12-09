@@ -1,6 +1,10 @@
 export function getResults(value: number, operators: string[], remainingValues: number[]): number[] {
   if (remainingValues.length === 1) {
     return operators.map((o) => {
+      if (o === '||') {
+        return Number(`${remainingValues[0]}${value}`);
+      }
+
       return eval(`${value}${o}${remainingValues[0]}`);
     });
   }
@@ -11,14 +15,18 @@ export function getResults(value: number, operators: string[], remainingValues: 
 
   for (const o of operators) {
     for (const r of childResults) {
-      possibleResults.push(eval(`${value}${o}${r}`));
+      if (o === '||') {
+        possibleResults.push(Number(`${r}${value}`));
+      } else {
+        possibleResults.push(eval(`${value}${o}${r}`));
+      }
     }
   }
 
   return possibleResults;
 }
 
-export function algo(input: string): number {
+export function algo(input: string, part: 1 | 2 = 1): number {
   let sum = 0;
 
   const equations = input
@@ -35,6 +43,10 @@ export function algo(input: string): number {
 
   const operators = ['+', '*'];
 
+  if (part === 2) {
+    operators.push('||');
+  }
+
   for (const equation of equations) {
     const values = equation.values;
 
@@ -48,12 +60,4 @@ export function algo(input: string): number {
   }
 
   return sum;
-}
-
-/**
- * Part 2
- */
-
-export function algo2(input: string): number {
-  return 0;
 }
