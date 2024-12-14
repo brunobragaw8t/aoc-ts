@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { algo, getBlocks, compactBlocks } = require("./index.js");
+const { algo, getBlocks, compactBlocks, getBlocks2, algo2 } = require("./index.js");
 
 const inputDemo = fs.readFileSync(__dirname + "/input-demo-1.txt").toString();
 const inputChallenge = fs.readFileSync(__dirname + "/input.txt").toString();
@@ -17,4 +17,32 @@ test("compactBlocks", () => {
 test("algo", () => {
   expect(algo(inputDemo)).toBe(1928);
   console.log('Result: ', algo(inputChallenge));
+});
+
+test("getBlocks2", () => {
+  expect(getBlocks2(inputDemo)).toEqual([
+    { id: 0, size: 2 },
+    { id: -1, size: 3 },
+    { id: 1, size: 3 },
+    { id: -1, size: 3 },
+    { id: 2, size: 1 },
+    { id: -1, size: 3 },
+    { id: 3, size: 3 },
+    { id: -1, size: 1 },
+    { id: 4, size: 2 },
+    { id: -1, size: 1 },
+    { id: 5, size: 4 },
+    { id: -1, size: 1 },
+    { id: 6, size: 4 },
+    { id: -1, size: 1 },
+    { id: 7, size: 3 },
+    { id: -1, size: 1 },
+    { id: 8, size: 4 },
+    { id: 9, size: 2 },
+  ]);
+})
+
+test("algo2", () => {
+  expect(algo2(inputDemo)).toBe(2858);
+  console.log('Result 2: ', algo2(inputChallenge));
 });
