@@ -71,3 +71,16 @@ export function algo(input: string): number {
 
   return exits.length;
 }
+
+export function algo2(input: string): number {
+  const map = getMap(input);
+  const heads = getHeads(map);
+
+  let sum = 0;
+
+  for (const head of heads) {
+    sum += getExits(map, head, '1').length;
+  }
+
+  return sum;
+}
