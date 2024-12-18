@@ -9,9 +9,10 @@ test("algo", () => {
   expect(algo(inputDemo1, 1)).toBe(7);
   expect(algo(inputDemo2, 6)).toBe(22);
   expect(algo(inputDemo2, 25)).toBe(55312);
-  console.log('Result: ', algo(inputChallenge, 25));
+  expect(algo(inputChallenge, 25)).toBe(188902);
+  // console.log('Result: ', algo(inputChallenge, 25));
 });
 
-// test("algo2", () => {
-//   console.log('Result 2: ', algo2(inputChallenge));
-// });
+test("algo2", () => {
+  console.log('Result 2: ', algo(inputChallenge, 75));
+});
