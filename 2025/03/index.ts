@@ -20,26 +20,30 @@ export function algo(input: string): number {
   return sum;
 }
 
-function getCombinations(value: string, bank: string): string[] {
-  if (bank.length === 0 && value.length !== 12) return [];
+function getMax(value: number, valueLength: number, bank: string): number {
+  if (bank.length === 0 && valueLength !== 12) return 0;
 
-  if (value.length === 12) return [`${value}`];
+  if (valueLength === 12) return value;
 
-  const combinations = [];
-  let currMaxValue = 0;
+  let currMaxDigit = 0;
+  let currMaxValue = value;
 
   for (let i = 0; i < bank.length; i++) {
-    if (Number(bank[i]) <= currMaxValue) continue;
-    currMaxValue = Number(bank[i]);
+    let currDigit = Number(bank[i]);
 
-    combinations.push(
-      Math.max(
-        ...getCombinations(`${value}${bank[i]}`, bank.slice(i + 1)).map(Number),
-      ).toString(),
+    if (currDigit <= currMaxDigit) continue;
+    currMaxDigit = currDigit;
+
+    const max = getMax(
+      value * 10 + currDigit,
+      valueLength + 1,
+      bank.slice(i + 1),
     );
+
+    if (max > currMaxValue) currMaxValue = max;
   }
 
-  return combinations;
+  return currMaxValue;
 }
 
 export function algo2(input: string): number {
@@ -49,9 +53,7 @@ export function algo2(input: string): number {
   let i = 0;
 
   for (const bank of banks) {
-    const combinations = getCombinations("", bank);
-
-    const max = Math.max(...combinations.map(Number));
+    const max = getMax(0, 0, bank);
 
     sum += max;
 

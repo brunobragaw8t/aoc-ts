@@ -8,5 +8,5 @@ test("algo", () => {
   expect(algo(inputDemo1)).toBe(357);
   expect(algo(input)).toBe(17193);
   expect(algo2(inputDemo1)).toBe(3121910778619);
-  console.log(algo2(input));
+  expect(algo2(input)).toBe(171297349921310);
 });
