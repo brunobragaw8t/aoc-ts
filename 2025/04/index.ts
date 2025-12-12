@@ -56,3 +56,49 @@ export function algo(input: string): number {
 
   return sum;
 }
+
+export function algo2(input: string): number {
+  const map = getMap(input);
+
+  let sum = 0;
+  let rollsWereRemoved = true;
+
+  while (rollsWereRemoved) {
+    let sumThisRound = 0;
+
+    for (let y = 0; y < map.length; y++) {
+      for (let x = 0; x < map[y].length; x++) {
+        if (!isPaperRoll(map, { x, y })) continue;
+
+        const coordsToCheck = [
+          { x: x, y: y - 1 },
+          { x: x + 1, y: y - 1 },
+          { x: x + 1, y: y },
+          { x: x + 1, y: y + 1 },
+          { x: x, y: y + 1 },
+          { x: x - 1, y: y + 1 },
+          { x: x - 1, y: y },
+          { x: x - 1, y: y - 1 },
+        ];
+
+        let adjacentPaperRolls = 0;
+
+        for (const coord of coordsToCheck) {
+          if (isPaperRoll(map, coord)) {
+            adjacentPaperRolls++;
+          }
+        }
+
+        if (adjacentPaperRolls < 4) {
+          sumThisRound++;
+          sum++;
+          map[y][x] = "x";
+        }
+      }
+    }
+
+    rollsWereRemoved = sumThisRound > 0;
+  }
+
+  return sum;
+}
